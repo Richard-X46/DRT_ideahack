@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+    background-image: url("/static/resource/drt_img1.avif");
+    background-size: 100%; /* Zoom out by scaling the image to 150% */    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    color: white;
+}
+
+
+/* Center the button at the bottom of the screen */
+button {
+    padding: 10px;
+    font-size: 16px;
+    position: absolute;
+    bottom: 20px;  /* Distance from the bottom */
+    left: 50%;  /* Center horizontally */
+    transform: translateX(-50%);  /* Corrects the centering of the button */
+}

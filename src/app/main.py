@@ -18,7 +18,7 @@ from flask import Flask, render_template, jsonify, request, flash, redirect, url
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev'
-
+app.config["MIME_TYPES"] = {"avif": "image/avif"}
 # Durham Region center coordinates
 DURHAM_CENTER = [43.8971, -78.8658]
 
@@ -93,7 +93,7 @@ def create_combined_map(source_coords: Tuple[float, float], dest_coords: Tuple[f
             popup=f"Route ID: {vehicle['route_id']}, Vehicle ID: {vehicle['id']}",
             color="blue",
             fill=True,
-            radius=8,
+            radius=6,
         ).add_to(vehicle_group)
     
     # Add static routes
@@ -108,9 +108,9 @@ def create_combined_map(source_coords: Tuple[float, float], dest_coords: Tuple[f
         folium.GeoJson(
             feature,
             style_function=lambda x: {
-                "color": "black",
+                "color": "orange",
                 "weight": 3,
-                "opacity": 0.6,
+                "opacity": 0.8,
             },
             tooltip=folium.GeoJsonTooltip(
                 fields=["ROUTE_NAME", "ROUTE_ID"],
@@ -277,9 +277,6 @@ def get_map():
         return redirect(url_for("second_page"))
     
 
-
-
-    
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

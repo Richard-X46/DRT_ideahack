@@ -9,8 +9,9 @@ from pydantic import BaseModel
 from starlette.requests import Request
 from fastapi.middleware.cors import CORSMiddleware
 import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))  # Adjust the path to your project structure
 import src.data.drt_gtfs as gtfs
-
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -86,9 +87,7 @@ async def read_root():
     try:
         logger.info("Generating the map with GTFS data.")
         static_routes_data = gtfs.fetch_static_routes()
-        combined_map = gtfs.create_combined_map(
-            gtfs.vehicles, static_routes_data, gtfs.durham_center
-        )
+        combined_map = gtfs.create_combined_map(gtfs.vehicles, static_routes_data, gtfs.durham_center)
         combined_map_html = combined_map.get_root().render()
         logger.info("Map generated successfully.")
         return HTMLResponse(content=combined_map_html, status_code=200)
@@ -107,14 +106,18 @@ async def get_map(request: Request):
 
         # Generate the map using Folium
         logging.info("Generating map...")
-        map = folium.Map(location=[45.5236, -122.6750], zoom_start=13)
-        # Add markers for source and destination
-        folium.Marker([45.5236, -122.6750], popup="Source").add_to(map)
-        folium.Marker([45.5236, -122.6750], popup="Destination").add_to(map)
+
+
+
+        static_routes_data = gtfs.fetch_static_routes()
+        combined_map = gtfs.create_combined_map(
+            gtfs.vehicles, static_routes_data, gtfs.durham_center
+        )
+        
 
         # Return the map HTML
         logging.info("Returning map HTML...")
-        return HTMLResponse(content=map._repr_html_(), status_code=200)
+        return HTMLResponse(content=combined_map._repr_html_(), status_code=200)
     except Exception as e:
         logging.error(f"Error generating map: {e}")
         return HTMLResponse(content=f"<h1>Error generating map: {str(e)}</h1>", status_code=500)

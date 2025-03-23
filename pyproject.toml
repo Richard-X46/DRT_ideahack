@@ -7,8 +7,10 @@ requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.115.11",
     "folium>=0.19.5",
+    "geopy>=2.4.1",
     "gtfs-realtime-bindings>=1.0.0",
     "ipykernel>=6.29.5",
+    "osmpythontools>=0.3.5",
     "pip>=25.0.1",
     "pytz>=2025.1",
     "requests>=2.32.3",

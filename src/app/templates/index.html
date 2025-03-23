@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DURHAM REGION TRANSIT I-MAPS</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <h1>DURHAM REGION TRANSIT I-MAPS</h1>
-    <button id="clickBtn">DRT Routes</button>
-    
-    <script src="/static/js/script.js"></script>
+    <form action="{{ url_for('second_page') }}" method="get">
+        <button type="submit">DRT Routes</button>
+    </form>
 </body>
 </html>
-
-
-

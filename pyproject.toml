@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.115.11",
+    "flask>=3.1.0",
     "folium>=0.19.5",
     "geopy>=2.4.1",
     "gtfs-realtime-bindings>=1.0.0",

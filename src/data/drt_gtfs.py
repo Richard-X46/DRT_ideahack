@@ -2,16 +2,15 @@ import requests
 import folium
 from typing import Dict, Any, List
 from google.transit import gtfs_realtime_pb2
+import pandas as pd
+import pytz
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+from pathlib import Path
+import sys
+# Add project root to Python path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-"""
-1. Create two overlays: live transit bus data and static transit overlay.
-2. Use GTFS Realtime Vehicle Positions for live data.
-    - provide a drop down menu to select routes,multi-select dropdown
-    - show route name and route id in the tooltip
-3. Use GeoJSON for static routes.
-   - provide a drop down menu to select routes,multi-select dropdown
-   - show route name and route id in the tooltip
-"""
 
 # Center of Durham Region
 durham_center = [43.8971, -78.8658]
@@ -34,6 +33,7 @@ for entity in feed.entity:
             'timestamp': entity.vehicle.timestamp
         }
         vehicles.append(vehicle)
+
 
 
 def plot_vehicles(vehicles: List[Dict[str, Any]], map_center: List[float], zoom_start: int = 12) -> folium.Map:
@@ -136,9 +136,43 @@ def create_combined_map(vehicles: List[Dict[str, Any]], geojson_data: Dict[str, 
     return m
 
 
+# get bus stops from opendata
+def get_bus_stops() -> List[Dict[str, Any]]:
+    """Fetch bus stops data from Durham Region Transit API."""
+    url = "https://maps.durham.ca/arcgis/rest/services/Open_Data/Durham_OpenData/MapServer/0/query"
+    params = {
+        'outFields': '*',
+        'where': '1=1',
+        'f': 'geojson'
+    }
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    return response.json().get('features', [])
+
+
+
+
 if __name__ == "__main__":
     # When running this file directly, fetch the static routes data then create the maps.
     static_routes_data = fetch_static_routes()
     vehicles_map = plot_vehicles(vehicles, durham_center)
     static_routes_map = create_static_routes_map(static_routes_data, durham_center)
     combined_map = create_combined_map(vehicles, static_routes_data, durham_center)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

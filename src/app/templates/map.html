@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRT Route Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="map-container">
+        <h1>Route Map</h1>
+        <div class="map-details">
+            <p><strong>From:</strong> {{ source }}</p>
+            <p><strong>To:</strong> {{ destination }}</p>
+            <p><strong>Source coordinates:</strong> {{ source_coords }}</p>
+            <p><strong>Destination coordinates:</strong> {{ dest_coords }}</p>
+        </div>
+        
+        {% if map_created %}
+        <div id="map-container">
+            <iframe src="{{ url_for('static', filename='temp_map.html') }}"
+                    width="100%"
+                    height="600"
+                    frameborder="0"
+                    style="border: 2px solid #ccc; border-radius: 8px;">
+            </iframe>
+        </div>
+        {% endif %}
+        
+        <a href="{{ url_for('second_page') }}" class="back-button">Back to Search</a>
+    </div>
+</body>
+</html>

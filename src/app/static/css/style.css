@@ -3,12 +3,13 @@ body {
     text-align: center;
     margin: 50px;
     background-image: url("/static/resource/drt_img1.avif");
-    background-size: 100%; /* Zoom out by scaling the image to 150% */    background-position: center;
+    /* Adjust background-size to make the image smaller */
+    background-size: 80%;  /* Reduces the image size to 10% of its original size */
+    background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
     color: white;
 }
-
 
 /* Center the button at the bottom of the screen */
 button {
@@ -19,3 +20,51 @@ button {
     left: 50%;  /* Center horizontally */
     transform: translateX(-50%);  /* Corrects the centering of the button */
 }
+
+
+/* Custom background settings for secondPage.html */
+.second-page-body {
+    background-image: url("/static/resource/drt_img1.avif");
+    background-size: 10%; /* Reduce the size of the image on the second page */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: rgb(11, 11, 11);
+
+}
+
+/* Highlight the source dropdown */
+#source {
+    background-color: #f0f8ff;  /* Light blue background */
+    border: 2px solid #87cefa;  /* Lighter border */
+    color: #333333;  /* Dark text color */
+    font-size: 16px;  /* Adjust font size */
+    padding: 8px;
+}
+
+/* Highlight the destination dropdown */
+#destination {
+    background-color: #ffebcd;  /* Light beige background */
+    border: 2px solid #deb887;  /* Lighter brown border */
+    color: #333333;  /* Dark text color */
+    font-size: 16px;  /* Adjust font size */
+    padding: 8px;
+}
+
+/* Highlight the button */
+#getMapBtn {
+    background-color: #32cd32;  /* Green background */
+    border: 2px solid #228b22;  /* Darker green border */
+    color: white;  /* White text color */
+    font-size: 16px;  /* Adjust font size */
+    padding: 10px 20px;  /* Adjust padding */
+    cursor: pointer;  /* Change cursor to pointer */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Button hover effect */
+#getMapBtn:hover {
+    background-color: #28a745;  /* Darker green */
+    border-color: #1e7e34;  /* Even darker green */
+}
+

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             setLoading(inputElement === sourceInput ? lookupSourceBtn : lookupDestBtn, true);
             
-            const response = await fetch(`/address-suggestions?query=${encodeURIComponent(query)}`);
+            const response = await fetch(`/drt-ideahack/address-suggestions?query=${encodeURIComponent(query)}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

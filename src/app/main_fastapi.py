@@ -8,7 +8,7 @@ import folium
 from google.transit import gtfs_realtime_pb2
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
-import time
+import asyncio
 from pathlib import Path
 
 # Configure paths
@@ -176,7 +176,7 @@ async def get_address_suggestions(query: str, country: str = "ca", max_results: 
         return suggestions
 
     except GeocoderTimedOut:
-        await time.sleep(1)
+        await asyncio.sleep(1)
         return []
     except Exception as e:
         print(f"Error fetching suggestions: {e}")

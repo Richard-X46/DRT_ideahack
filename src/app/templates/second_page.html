@@ -4,33 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Locations</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
 </head>
 <body>
     <h1>Select Locations</h1>
     
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for message in messages %}
-                    <div class="alert">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+    {% if error %}
+        <div class="flash-messages">
+            <div class="alert">{{ error }}</div>
+        </div>
+    {% endif %}
 
     <div class="address-container">
         <form method="post" action="{{ url_for('get_map') }}" id="mapForm">
             <div class="input-group">
                 <label for="source">Source Location:</label>
-                <input type="text" id="source" name="source" required value="{{ request.form.get('source', '') }}">
+                <input type="text" id="source" name="source" required value="">
                 <button type="button" onclick="searchAddress('source')">Search</button>
             </div>
             <select id="sourceSelect" style="display: none;" size="5" onchange="selectAddress('source')"></select>
 
             <div class="input-group">
                 <label for="destination">Destination Location:</label>
-                <input type="text" id="destination" name="destination" required value="{{ request.form.get('destination', '') }}">
+                <input type="text" id="destination" name="destination" required value="">
                 <button type="button" onclick="searchAddress('destination')">Search</button>
             </div>
             <select id="destinationSelect" style="display: none;" size="5" onchange="selectAddress('destination')"></select>

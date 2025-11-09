@@ -12,8 +12,8 @@ from google.transit import gtfs_realtime_pb2
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 import src.data.drt_gtfs as gtfs
-from flask import Flask, render_template, jsonify, request, flash, redirect, url_for, Markup
-
+from flask import Flask, render_template, jsonify, request, flash, redirect, url_for
+from markupsafe import Markup
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')

@@ -20,6 +20,12 @@ response = requests.get("https://drtonline.durhamregiontransit.com/gtfsrealtime/
 feed = gtfs_realtime_pb2.FeedMessage()
 feed.ParseFromString(response.content)
 
+# checking data in feed
+response = requests.get(
+    "https://drtonline.durhamregiontransit.com/gtfsrealtime/VehiclePositions"
+)
+
+
 # Extract vehicle positions
 vehicles = []
 for entity in feed.entity:
@@ -156,21 +162,15 @@ if __name__ == "__main__":
     # When running this file directly, fetch the static routes data then create the maps.
     static_routes_data = fetch_static_routes()
     vehicles_map = plot_vehicles(vehicles, durham_center)
+    # vehicles_map.save("vehicles_map.html")
+    
     static_routes_map = create_static_routes_map(static_routes_data, durham_center)
+    # static_routes_map.save("static_routes_map.html")
+
     combined_map = create_combined_map(vehicles, static_routes_data, durham_center)
+    # combined_map.save("combined_map.html")
 
-
-
-
-
-
-
-
-
-
-
-
-
+    # print("Maps saved to vehicles_map.html, static_routes_map.html, and combined_map.html")
 
 
 

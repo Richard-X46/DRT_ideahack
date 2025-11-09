@@ -1,4 +1,3 @@
-from flask import Flask, render_template, jsonify, request
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from typing import List, Tuple, Dict, Any
@@ -17,7 +16,7 @@ from flask import Flask, render_template, jsonify, request, flash, redirect, url
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dev'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 app.config["MIME_TYPES"] = {"avif": "image/avif"}
 # Durham Region center coordinates
 DURHAM_CENTER = [43.8971, -78.8658]
@@ -127,8 +126,9 @@ def create_combined_map(source_coords: Tuple[float, float], dest_coords: Tuple[f
     folium.LayerControl(collapsed=False).add_to(m)
     
     return m
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dev'
+
+
+
 
 def get_address_suggestions(query: str, country: str = "ca", max_results: int = 5) -> List[str]:
     if len(query.strip()) < 3:
@@ -278,5 +278,7 @@ def get_map():
     
 
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+# if __name__ == "__main__":
+#     app.run(debug=True,host = "0.0.0.0", port=5002)
+
+

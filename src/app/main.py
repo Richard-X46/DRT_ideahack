@@ -1,4 +1,5 @@
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.middleware.proxy_fix import ProxyFix
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from typing import List, Tuple, Dict, Any
@@ -20,6 +21,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 app.config["MIME_TYPES"] = {"avif": "image/avif"}
 app.config["APPLICATION_ROOT"] = "/drt-ideahack"
+
+
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
 # Durham Region center coordinates
 DURHAM_CENTER = [43.8971, -78.8658]
 

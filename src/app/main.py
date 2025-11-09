@@ -1,3 +1,4 @@
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from typing import List, Tuple, Dict, Any
@@ -18,6 +19,7 @@ from markupsafe import Markup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 app.config["MIME_TYPES"] = {"avif": "image/avif"}
+app.config["APPLICATION_ROOT"] = "/drt-ideahack"
 # Durham Region center coordinates
 DURHAM_CENTER = [43.8971, -78.8658]
 
@@ -278,7 +280,8 @@ def get_map():
     
 
 
-# if __name__ == "__main__":
-#     app.run(debug=True,host = "0.0.0.0", port=5002)
+
+# Mount the app at /drt-ideahack for correct url_for path generation
+application = DispatcherMiddleware(None, {'/drt-ideahack': app})
 
 

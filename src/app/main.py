@@ -12,7 +12,7 @@ from google.transit import gtfs_realtime_pb2
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 import src.data.drt_gtfs as gtfs
-from flask import Flask, render_template, jsonify, request, flash, redirect, url_for
+from flask import Flask, render_template, jsonify, request, flash, redirect, url_for, Markup
 
 
 app = Flask(__name__)
@@ -260,8 +260,7 @@ def get_map():
 
         # Create and save map
         map_obj = create_combined_map(source_coords, dest_coords)
-        map_path = os.path.join(static_folder, "temp_map.html")
-        map_obj.save(map_path)
+        map_html = map_obj._repr_html_()  # Get HTML as string
 
         return render_template(
             "map.html",
@@ -270,6 +269,7 @@ def get_map():
             source_coords=source_coords,
             dest_coords=dest_coords,
             map_created=True,
+            map_html=Markup(map_html),  # Pass HTML safely
         )
     except Exception as e:
         app.logger.error(f"Error in get_map: {str(e)}")

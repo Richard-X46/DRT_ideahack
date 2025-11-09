@@ -16,6 +16,16 @@ BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
 
+# Debug: Print paths and verify they exist
+print(f"BASE_DIR: {BASE_DIR}")
+print(f"STATIC_DIR: {STATIC_DIR}")
+print(f"STATIC_DIR exists: {STATIC_DIR.exists()}")
+if STATIC_DIR.exists():
+    print(f"STATIC_DIR contents: {list(STATIC_DIR.iterdir())}")
+    resource_dir = STATIC_DIR / "resource"
+    if resource_dir.exists():
+        print(f"resource directory contents: {list(resource_dir.iterdir())}")
+
 # Create FastAPI app with subpath support
 app = FastAPI(
     title="DRT IdeaHack",

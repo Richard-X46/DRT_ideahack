@@ -282,6 +282,5 @@ def get_map():
 
 
 # Mount the app at /drt-ideahack for correct url_for path generation
-application = DispatcherMiddleware(None, {'/drt-ideahack': app})
-
+application = DispatcherMiddleware(app, {"/drt-ideahack": app})
 

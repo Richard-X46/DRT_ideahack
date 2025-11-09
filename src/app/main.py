@@ -19,6 +19,7 @@ from markupsafe import Markup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 app.config["MIME_TYPES"] = {"avif": "image/avif"}
+app.config['APPLICATION_ROOT'] = '/drt-ideahack'
 
 # Apply ProxyFix to handle headers from reverse proxy
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)

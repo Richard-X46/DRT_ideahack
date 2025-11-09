@@ -13,7 +13,11 @@ RUN pip install --no-cache-dir uv
 RUN uv pip install --system -e .
 
 # Copy the rest of the application code
+# Copy source code
 COPY src/ ./src/
+# Ensure static and templates folders are present
+COPY src/app/static/ ./src/app/static/
+COPY src/app/templates/ ./src/app/templates/
 
 # Set environment variables
 ENV FLASK_ENV=production

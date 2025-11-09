@@ -30,11 +30,12 @@ if STATIC_DIR.exists():
 app = FastAPI(
     title="DRT IdeaHack",
     description="Durham Region Transit Route Mapper",
-    version="0.2.0"
+    version="0.2.0",
+    root_path="/drt-ideahack"
 )
 
 # Mount static files with html parameter to serve all file types
-app.mount("/drt-ideahack/static", StaticFiles(directory=str(STATIC_DIR), html=False), name="static")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR), html=False), name="static")
 
 # Setup Jinja2 templates
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
@@ -241,27 +242,26 @@ async def geocode_selected_address(address: str) -> Tuple[float, float] | None:
 
 # Routes
 
-@app.get("/drt-ideahack", response_class=HTMLResponse)
-@app.get("/drt-ideahack/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     """Homepage"""
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/drt-ideahack/second_page", response_class=HTMLResponse)
+@app.get("/second_page", response_class=HTMLResponse)
 async def second_page(request: Request):
     """Address selection page"""
     return templates.TemplateResponse("second_page.html", {"request": request})
 
 
-@app.get("/drt-ideahack/address-suggestions")
+@app.get("/address-suggestions")
 async def address_suggestions(query: str = ""):
     """Get address suggestions based on query"""
     suggestions = await get_address_suggestions(query)
     return {"suggestions": suggestions}
 
 
-@app.post("/drt-ideahack/get_map", response_class=HTMLResponse)
+@app.post("/get_map", response_class=HTMLResponse)
 async def get_map(
     request: Request,
     source: str = Form(...),

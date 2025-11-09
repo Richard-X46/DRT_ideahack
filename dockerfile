@@ -27,4 +27,5 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--timeout", "120", "src.app.main:application"]
+# Use Uvicorn for FastAPI instead of Gunicorn
+CMD ["uvicorn", "src.app.main_fastapi:app", "--host", "0.0.0.0", "--port", "5000", "--timeout-keep-alive", "120"]

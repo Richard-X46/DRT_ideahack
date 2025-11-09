@@ -1,21 +1,21 @@
 [project]
 name = "drt-ideahack"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "Durham Region Transit route mapper - FastAPI version"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.11",
-    "flask>=3.1.0",
     "folium>=0.19.5",
     "geopy>=2.4.1",
     "gtfs-realtime-bindings>=1.0.0",
-    "gunicorn>=23.0.0",
+    "httpx>=0.27.0",
     "ipykernel>=6.29.5",
+    "jinja2>=3.1.4",
     "osmpythontools>=0.3.5",
     "pip>=25.0.1",
     "pytest>=8.4.2",
+    "python-multipart>=0.0.9",
     "pytz>=2025.1",
-    "requests>=2.32.3",
-    "uvicorn>=0.34.0",
+    "uvicorn[standard]>=0.34.0",
 ]

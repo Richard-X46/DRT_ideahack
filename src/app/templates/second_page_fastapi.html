@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Locations</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+    <h1>Select Locations</h1>
+    
+    {% if error %}
+        <div class="flash-messages">
+            <div class="alert">{{ error }}</div>
+        </div>
+    {% endif %}
+
+    <div class="address-container">
+        <form method="post" action="{{ url_for('get_map') }}" id="mapForm">
+            <div class="input-group">
+                <label for="source">Source Location:</label>
+                <input type="text" id="source" name="source" required value="">
+                <button type="button" onclick="searchAddress('source')">Search</button>
+            </div>
+            <select id="sourceSelect" style="display: none;" size="5" onchange="selectAddress('source')"></select>
+
+            <div class="input-group">
+                <label for="destination">Destination Location:</label>
+                <input type="text" id="destination" name="destination" required value="">
+                <button type="button" onclick="searchAddress('destination')">Search</button>
+            </div>
+            <select id="destinationSelect" style="display: none;" size="5" onchange="selectAddress('destination')"></select>
+
+            <button type="submit">Get Map</button>
+        </form>
+    </div>
+
+    <script>
+        const addressSuggestionsUrl = "{{ url_for('address_suggestions') }}";
+        
+        function searchAddress(type) {
+            const input = document.getElementById(type);
+            const select = document.getElementById(type + 'Select');
+            
+            if (input.value.length < 3) {
+                alert('Please enter at least 3 characters');
+                return;
+            }
+
+            fetch(`${addressSuggestionsUrl}?query=${encodeURIComponent(input.value)}`)
+                .then(response => response.json())
+                .then(data => {
+                    select.innerHTML = '';
+                    data.suggestions.forEach(address => {
+                        const option = new Option(address, address);
+                        select.add(option);
+                    });
+                    select.style.display = data.suggestions.length ? 'block' : 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error fetching addresses');
+                });
+        }
+
+        function selectAddress(type) {
+            const select = document.getElementById(type + 'Select');
+            const input = document.getElementById(type);
+            input.value = select.value;
+            select.style.display = 'none';
+        }
+
+        // Preserve form data on page reload
+        document.getElementById('mapForm').addEventListener('submit', function(e) {
+            localStorage.setItem('source', document.getElementById('source').value);
+            localStorage.setItem('destination', document.getElementById('destination').value);
+        });
+
+        // Restore form data if available
+        window.onload = function() {
+            const source = localStorage.getItem('source');
+            const destination = localStorage.getItem('destination');
+            if (source) document.getElementById('source').value = source;
+            if (destination) document.getElementById('destination').value = destination;
+        };
+    </script>
+</body>
+</html>

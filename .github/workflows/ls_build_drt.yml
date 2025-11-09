@@ -30,6 +30,6 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/drt-ideahack:latest
+          tags: ghcr.io/richard-x46/drt-ideahack:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

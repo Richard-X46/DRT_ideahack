@@ -13,8 +13,9 @@ RUN pip install --no-cache-dir uv
 RUN uv pip install --system -e .
 
 # Copy the rest of the application code
-# Copy source code
 COPY src/ ./src/
+
+
 # Ensure static and templates folders are present
 COPY src/app/static/ ./src/app/static/
 COPY src/app/templates/ ./src/app/templates/
@@ -26,4 +27,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "src.app.main:application"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "src.app.main:app"]

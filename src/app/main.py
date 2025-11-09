@@ -1,4 +1,3 @@
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.middleware.proxy_fix import ProxyFix
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
@@ -20,10 +19,9 @@ from markupsafe import Markup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 app.config["MIME_TYPES"] = {"avif": "image/avif"}
-app.config["APPLICATION_ROOT"] = "/drt-ideahack"
 
-
-app.wsgi_app = ProxyFix(app.wsgi_app)
+# Apply ProxyFix to handle headers from reverse proxy
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # Durham Region center coordinates
 DURHAM_CENTER = [43.8971, -78.8658]
@@ -286,6 +284,7 @@ def get_map():
 
 
 
-# Mount the app at /drt-ideahack for correct url_for path generation
-application = DispatcherMiddleware(app, {"/drt-ideahack": app})
+# For running with Gunicorn
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
 

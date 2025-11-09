@@ -40,6 +40,8 @@
     </div>
 
     <script>
+        const addressSuggestionsUrl = "{{ url_for('address_suggestions') }}";
+        
         function searchAddress(type) {
             const input = document.getElementById(type);
             const select = document.getElementById(type + 'Select');
@@ -49,7 +51,7 @@
                 return;
             }
 
-            fetch(`/address-suggestions?query=${encodeURIComponent(input.value)}`)
+            fetch(`${addressSuggestionsUrl}?query=${encodeURIComponent(input.value)}`)
                 .then(response => response.json())
                 .then(data => {
                     select.innerHTML = '';

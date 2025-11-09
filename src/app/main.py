@@ -1,4 +1,5 @@
 from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from typing import List, Tuple, Dict, Any
@@ -19,7 +20,6 @@ from markupsafe import Markup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 app.config["MIME_TYPES"] = {"avif": "image/avif"}
-app.config['APPLICATION_ROOT'] = '/drt-ideahack'
 
 # Apply ProxyFix to handle headers from reverse proxy
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
@@ -285,7 +285,18 @@ def get_map():
 
 
 
-# For running with Gunicorn
+# Create a simple 404 app for the root
+def simple_app(environ, start_response):
+    start_response('404 Not Found', [('Content-Type', 'text/plain')])
+    return [b'Not Found']
+
+# Use DispatcherMiddleware to mount the app at /drt-ideahack
+application = DispatcherMiddleware(simple_app, {
+    '/drt-ideahack': app
+})
+
+# For running with Gunicorn - use 'application'
 if __name__ == "__main__":
+    # For local development, run the app directly
     app.run(debug=True, host="0.0.0.0", port=5000)
 

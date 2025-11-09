@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 from typing import List, Tuple, Dict, Any
 import httpx
 import folium
@@ -16,22 +17,18 @@ BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
 
-# Debug: Print paths and verify they exist
-print(f"BASE_DIR: {BASE_DIR}")
-print(f"STATIC_DIR: {STATIC_DIR}")
-print(f"STATIC_DIR exists: {STATIC_DIR.exists()}")
-if STATIC_DIR.exists():
-    print(f"STATIC_DIR contents: {list(STATIC_DIR.iterdir())}")
-    resource_dir = STATIC_DIR / "resource"
-    if resource_dir.exists():
-        print(f"resource directory contents: {list(resource_dir.iterdir())}")
-
 # Create FastAPI app with subpath support
 app = FastAPI(
     title="DRT IdeaHack",
     description="Durham Region Transit Route Mapper",
     version="0.2.0",
     root_path="/drt-ideahack"
+)
+
+# Trust proxy headers from Caddy using Uvicorn's official middleware
+app.add_middleware(
+    ProxyHeadersMiddleware,
+    trusted_hosts=["127.0.0.1", "localhost", "192.168.*.*"]
 )
 
 # Mount static files with html parameter to serve all file types

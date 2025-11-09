@@ -24,8 +24,8 @@ app = FastAPI(
     root_path="/drt-ideahack"  # This is all we need for subpath mounting!
 )
 
-# Mount static files
-app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+# Mount static files with html parameter to serve all file types
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR), html=False), name="static")
 
 # Setup Jinja2 templates
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
